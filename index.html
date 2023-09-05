@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Week 1</title>
+</head>
+<body>
+    <h1 id="title">Hello world</h1>
+    <button id="my-button" onclick="myFunction()">My Button</button>
+    <button id="add-data" onclick="appendData()">Add Data</button>
+    <textarea id="box"></textarea>
+    <ul id="list"></ul>
+</body>
+
+<script>
+    const myFunction = function() {
+        console.log("Hello world");
+        const title = document.getElementById("title");
+        title.innerHTML = "Moi maailma";
+    }
+
+    const appendData = function() {
+        const textBox = document.getElementById("box");
+        const list = document.getElementById("list");
+        const entry = document.createElement("li");
+        entry.innerHTML = textBox.value;
+        list.appendChild(entry);
+        textBox.value = "";
+    }
+</script>
+
+</html>
