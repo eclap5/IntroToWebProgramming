@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form</title>
+</head>
+<body>
+    <form id="form">
+        <label for="input-username">Username:</label>
+        <input type="text" id="input-username">
+        <label for="input-email">Email:</label>
+        <input type="text" id="input-email">
+        <label for="input-admin">Admin:</label>
+        <input type="checkbox" id="input-admin">
+        <button id="submit-data" onclick="submitForm(event)">submit</button>
+    </form>
+    <table id="table">
+        <tr>
+            <th>Username</th>
+            <th>Email</th>
+            <th>Admin</th>
+        </tr>
+        <tr>
+            <td>Administrator</td>
+            <td>admin@service.com</td>
+            <td>X</td>
+        </tr>
+        <tr>
+            <td>Rookit</td>
+            <td>rookit@company.com</td>
+            <td>-</td>
+        </tr>
+        <tr>
+            <td>eClapTS</td>
+            <td>eclapts@company.com</td>
+            <td>-</td>
+        </tr>
+    </table>
+    <button id="empty-table" onclick="clearData()">Clear data</button>
+</body>
+<script src="/app.js"></script>
+</html>
