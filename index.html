@@ -8,11 +8,19 @@
 <body>
     <form id="form">
         <label for="input-username">Username:</label>
+        <br>
         <input type="text" id="input-username">
+        <br>
         <label for="input-email">Email:</label>
+        <br>
         <input type="text" id="input-email">
+        <br>
         <label for="input-admin">Admin:</label>
         <input type="checkbox" id="input-admin">
+        <br>
+        <label for="input-image">Image:</label>
+        <input type="file" id="input-image">
+        <br>
         <button id="submit-data" onclick="submitForm(event)">submit</button>
     </form>
     <table id="table">
@@ -20,6 +28,7 @@
             <th>Username</th>
             <th>Email</th>
             <th>Admin</th>
+            <th></th>
         </tr>
         <tr>
             <td>Administrator</td>
