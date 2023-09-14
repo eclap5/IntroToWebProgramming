@@ -31,15 +31,37 @@ const dataMapper = (data, tableBody, employmentData) => {
         let municipalityCell = document.createElement('td');
         let valueCell = document.createElement('td');
         let employmentCell = document.createElement('td');
+        let percentageCell = document.createElement('td');
         
+        let percentage = employmentPercentage(employment[i], values[i]);
+        let percentageToString = percentage.toString() + '%';
+
         municipalityCell.innerHTML = Object.values(municipality)[i];
         valueCell.innerHTML = values[i];
         employmentCell.innerHTML = employment[i];
+        percentageCell.innerHTML = percentageToString;
 
         row.appendChild(municipalityCell);
         row.appendChild(valueCell);
         row.appendChild(employmentCell);
+        row.appendChild(percentageCell);
+        checkPercentage(row, percentage);
         tableBody.appendChild(row);
+    }
+}
+
+
+const employmentPercentage = (employmentValue, populationValue) => {
+    let percentage = (employmentValue / populationValue) * 100;
+    return percentage.toFixed(2);
+}
+
+
+const checkPercentage = (row, percentage) => {
+    if (percentage > 45.00) {
+        row.style.backgroundColor = '#abffbd';
+    } else if (percentage < 25.00) {
+        row.style.backgroundColor = '#ff9e9e';
     }
 }
 
