@@ -2,8 +2,6 @@ const searchShow = async (event) => {
     event.preventDefault();
 
     const data = await fetchData();
-    console.log("🚀 ~ file: app.js:3 ~ searchShow ~ data:", data)
-    
     const container = document.querySelector('.show-container');
 
     container.innerHTML = '';
