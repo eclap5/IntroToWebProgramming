@@ -1,44 +1,62 @@
 /// <reference path="../typings/index.d.ts" />
 
 const fetchData = async (url) => {
-    const response = await fetch(url);
-    const data = await response.json();
+    const response = await fetch(url)
+    const data = await response.json()
 
-    return data;
-};
+    return data
+}
+
+
+const handleData = async () => {   
+    const mapData = await fetchData(links.mapUrl)
+    const positiveMigrationData = await fetchData(links.posMigrationUrl)
+    const negativeMigrationData = await fetchData(links.negMigrationUrl)
+
+    for (let i of mapData.features) {
+        let id = 'KU' + i.properties.kunta
+        let posIndex = positiveMigrationData.dataset.dimension.Tuloalue.category.index[id]
+        let negIndex = negativeMigrationData.dataset.dimension.Lähtöalue.category.index[id]
+        i.properties.positiveMigration = positiveMigrationData.dataset.value[posIndex]
+        i.properties.negativeMigration = negativeMigrationData.dataset.value[negIndex]
+    }
+
+    return mapData
+}
 
 
 const initMap = async () => {
-    
-    const mapData = await fetchData(links.mapUrl);
-    const positiveMigrationData = await fetchData(links.posMigrationUrl);
-    const negativeMigrationData = await fetchData(links.negMigrationUrl);
+    let mapData = await handleData() 
+    console.log("🚀 ~ file: app.js:30 ~ initMap ~ mapData:", mapData)
 
     let map = L.map('map', {
         minZoom: -3
-    });
+    })
 
     let geoJson = L.geoJSON(mapData, {
         weight: 2,
         onEachFeature: getFeature
-    }).addTo(map);
+    }).addTo(map)
 
     let osm = L.tileLayer(links.osm, {
     attribution: "© OpenStreetMap"
-    }).addTo(map);
+    }).addTo(map)
 
-    map.fitBounds(geoJson.getBounds());
-};
+    map.fitBounds(geoJson.getBounds())
+}
 
 
 const getFeature = (feature, layer) => {
-    layer.bindTooltip(feature.properties.name);
-    layer.bindPopup();
-};
-
-
-const formatData = (feature) => {
-    let index = 'KU' + feature.properties.kunta;
+    layer.bindTooltip(feature.properties.name)
+    layer.bindPopup(
+    `
+    <div>
+    Positive migration: ${feature.properties.positiveMigration}
+    <br>
+    Negative migration: ${feature.properties.negativeMigration}
+    </div>
+    `    
+    )
 }
 
 
@@ -50,4 +68,4 @@ const links = {
 }
 
 
-document.addEventListener('DOMContentLoaded', initMap);
+document.addEventListener('DOMContentLoaded', initMap)
