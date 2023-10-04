@@ -35,7 +35,8 @@ const initMap = async () => {
 
     let geoJson = L.geoJSON(mapData, {
         weight: 2,
-        onEachFeature: getFeature
+        onEachFeature: getFeature,
+        style: getStyle
     }).addTo(map)
 
     let osm = L.tileLayer(links.osm, {
@@ -57,6 +58,15 @@ const getFeature = (feature, layer) => {
     </div>
     `    
     )
+}
+
+
+const getStyle = (feature) => {
+    let hue = Math.min(((feature.properties.positiveMigration / feature.properties.negativeMigration)**3*60), 120)
+    
+    return {
+        color: `hsl(${hue}, 75%, 50%)`
+    }
 }
 
 
