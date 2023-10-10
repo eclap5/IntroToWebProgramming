@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="#">
+    <script src="https://unpkg.com/frappe-charts@latest"></script>
+    <title>Week 6</title>
+</head>
+<body>
+    <form onsubmit="return false">
+        <label for="input-area">Municipality:</label>
+        <input type="text" id="input-area">
+        <button id="submit-data" onclick="buildMunicipalityChart()">submit</button>
+        <button id="add-data">add data</button>
+    </form>
+    <div id="chart">
+    </div>
+</body>
+
+<script src="app.js"></script>
+
+</html>
