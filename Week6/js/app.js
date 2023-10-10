@@ -52,10 +52,10 @@ const jsonQuery = {
     }
 }
 
+const url = 'https://statfin.stat.fi/PxWeb/api/v1/en/StatFin/synt/statfin_synt_pxt_12dy.px'
+
 
 const fetchData = async () => {
-    const url = 'https://statfin.stat.fi/PxWeb/api/v1/en/StatFin/synt/statfin_synt_pxt_12dy.px'
-
     const response = await fetch(url, {
         method: 'POST',
         headers: {
@@ -70,6 +70,12 @@ const fetchData = async () => {
 const buildChart = async () => {
     const data = await fetchData()
     const values = Object.values(data.value)
+    const areas = Object.values(data.dimension.Alue.category.label)
+    let name = areas[0] 
+    
+    if (areas[0] === 'WHOLE COUNTRY') {
+        name = 'Finland'
+    }
 
     let chart = new frappe.Chart( "#chart", {
         data: {
@@ -77,12 +83,13 @@ const buildChart = async () => {
     
         datasets: [
             {
-                name: "Population",
+                type: 'line',
+                name: name,
                 values: values
             }
         ]},
     
-        title: 'Finland population chart',
+        title: `${name} population chart`,
         type: 'line',
         height: 450,
         colors: ['#eb5146']
@@ -97,7 +104,6 @@ const buildChart = async () => {
 
 
 const fetchMunicipalityData = async () => {
-    const url = 'https://statfin.stat.fi/PxWeb/api/v1/en/StatFin/synt/statfin_synt_pxt_12dy.px'
     const response = await fetch(url, {
         method: 'GET',
         headers: {
@@ -108,10 +114,10 @@ const fetchMunicipalityData = async () => {
 }
 
 
-const getMunicipalityKey = async () => {
+const getMunicipalityKey = async (name) => {
     const data = await fetchMunicipalityData()
     const indexArray = Object.values(data.variables[1].valueTexts).map((x) => x.toLowerCase())
-    const index = indexArray.indexOf(document.getElementById('input-area').value.toLowerCase())
+    const index = indexArray.indexOf(name.toLowerCase())
     const municipalityKey = Object.values(data.variables[1].values)[index]
     
     return municipalityKey
@@ -119,7 +125,9 @@ const getMunicipalityKey = async () => {
 
 
 const buildMunicipalityChart = async () => {
-    const municipalityKey = await getMunicipalityKey()
+    const name = document.getElementById('input-area').value
+    const municipalityKey = await getMunicipalityKey(name)
+    document.getElementById('input-area').value = ''
     jsonQuery.query[1].selection.values[0] = municipalityKey
     buildChart()
 }
@@ -128,12 +136,15 @@ const buildMunicipalityChart = async () => {
 const formulatePredictionData = (data) => {
     let sum = 0
     for (let i = 1; i < data.length; i++) {
-        if (i <= data.length - 1) {
             sum += (data[i] - data[i - 1])
-        }
     }
     sum = (sum / (data.length - 1)) + data[data.length - 1]
     return sum
+}
+
+
+const navigation = () => {
+    window.location.href = 'newchart.html'
 }
 
 
