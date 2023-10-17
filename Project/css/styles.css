@@ -22,10 +22,6 @@
     background-color: #b4b4b4;
 }
 
-.nav-item::after {
-    background-color: #000000;
-}
-
 .dropdown-item:hover {
     background-color: #D3D3D3;
     text-decoration: underline;
@@ -44,4 +40,21 @@
     margin-top: 5vh;
     padding: 0;
     border-radius: 5px;
+}
+
+footer {
+    position: relative;
+    bottom: 0;
+    width: 100%;
+    background-color: #D3D3D3;
+    text-align: left;
+    font-size: small;
+    padding-left: 5vh;
+    box-shadow: 0 50vh 0 50vh #D3D3D3;
+    line-height: 2;
+    z-index: 1;
+}
+
+#info {
+    margin-bottom: 2%;
 }
