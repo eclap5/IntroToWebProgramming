@@ -10,6 +10,7 @@ const fetchData = async (url) => {
 
 const handleData = async () => {   
     const mapData = await fetchData(links.mapUrl)
+    console.log("🚀 ~ file: app.js:13 ~ handleData ~ mapData:", mapData)
     const positiveMigrationData = await fetchData(links.posMigrationUrl)
     const negativeMigrationData = await fetchData(links.negMigrationUrl)
 
@@ -27,7 +28,6 @@ const handleData = async () => {
 
 const initMap = async () => {
     let mapData = await handleData() 
-    console.log("🚀 ~ file: app.js:30 ~ initMap ~ mapData:", mapData)
 
     let map = L.map('map', {
         minZoom: -3

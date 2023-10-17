@@ -1,0 +1,47 @@
+#map {
+    height: 80vh;
+    width: 95%;
+    margin-left: 2.5%;
+    margin-top: 1%;
+    border-radius: 10px;
+    border: 2px solid #000000;
+    z-index: 0;
+}
+
+.nav {
+    position: sticky;
+    background-color: #D3D3D3;
+    line-height: 2.5;
+    top: 0;
+    z-index: 1;
+}
+
+.nav-item:hover {
+    border-radius: 5px;
+    color: #000000;
+    background-color: #b4b4b4;
+}
+
+.nav-item::after {
+    background-color: #000000;
+}
+
+.dropdown-item:hover {
+    background-color: #D3D3D3;
+    text-decoration: underline;
+}
+
+.dropdown-item.active {
+    background-color: #D3D3D3;
+    text-decoration: underline;
+}
+
+#input {
+    border-radius: 5px;
+}
+
+.dropdown-menu.show{
+    margin-top: 5vh;
+    padding: 0;
+    border-radius: 5px;
+}
