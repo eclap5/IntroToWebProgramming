@@ -22,6 +22,10 @@
     background-color: #b4b4b4;
 }
 
+.dropdown-item {
+    display: none;
+}
+
 .dropdown-item:hover {
     background-color: #D3D3D3;
     text-decoration: underline;
@@ -34,9 +38,12 @@
 
 #input {
     border-radius: 5px;
+    position: absolute;
+    top: 0;
 }
 
-.dropdown-menu.show{
+.dropdown-menu.show {
+    position: relative;
     margin-top: 5vh;
     padding: 0;
     border-radius: 5px;
@@ -56,5 +63,21 @@ footer {
 }
 
 #info {
+    margin-top: 5%;
     margin-bottom: 2%;
+    width: 95%;
+    margin-left: 2.5%;
 }
+
+#mapInfo {
+    padding-left: 8%;
+}
+
+#chartInfo {
+    padding-left: 8%;
+}
+
+#municipalityInfo {
+    padding-left: 8%;
+}
+

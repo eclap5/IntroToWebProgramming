@@ -29,13 +29,13 @@ const initMap = async () => {
     let mapData = await fetchData(commonConstants.mapUrl) 
 
     let map = L.map('map', {
-        minZoom: 4,
+        minZoom: 5,
+        maxZoom: 14,
     })
 
     let geoJson = L.geoJSON(mapData, {
         weight: 2,
-        onEachFeature: getFeature,
-        //style: getStyle
+        onEachFeature: getFeature
     }).addTo(map)
 
     let osm = L.tileLayer(commonConstants.openStreetMap, {
@@ -61,9 +61,9 @@ const displayFeatureData = (feature, layer) => {
         <br>
         Latest population: ${feature.properties.latestPopulation}
         <br>
-        Average crime rate per 100 person: ${feature.properties.averageCrimeRate}
+        Latest amount of crimes: ${feature.properties.averageCrimeRate}
         <br>
-        Average employment rate: ${feature.properties.averageEmploymentRate}%
+        Latest employment rate: ${feature.properties.averageEmploymentRate}%
     </div>
     `).openPopup()
 }
@@ -80,51 +80,30 @@ const handleFeatureData = async (feature) => {
     commonConstants.populationQuery.query[1].selection.values = [id]
     let populationData = await fetchApiData(commonConstants.populationUrl, commonConstants.populationQuery)
     feature.properties.latestPopulation = populationData.value[populationData.value.length - 1]
-    feature.properties.averageCrimeRate = await getAverageCrimeRate(id)
-    feature.properties.averageEmploymentRate = await getAverageEmploymentRate(id)
+    feature.properties.averageCrimeRate = await getLatestCrimeRate(id)
+    feature.properties.averageEmploymentRate = await getLatestEmploymentRate(id)
     return feature
 }
 
 
-const getAverageCrimeRate = async (id) => {
-    commonConstants.populationQuery.query[1].selection.values = [id]
-
-    let populationData = await fetchApiData(commonConstants.populationUrl, commonConstants.populationQuery)
-
-    let totalPopulation = 0
-    let totalCrimes = 0
+const getLatestCrimeRate = async (id) => {
+    let latestCrimes = 0
     let index = commonConstants.criminalStatQuery.query[1].selection.values.indexOf(id)
-    
-    for(let i = 0; i < populationData.value.length; i++) {
-        totalPopulation += populationData.value[i]
-    }
 
-    for(let i = index; i < criminalData.length; i += 310) {
-        totalCrimes += criminalData[i]
-    }
+    latestCrimes = criminalData[310 * 22 + index]
 
-    return (totalCrimes / totalPopulation * 100).toFixed(2)
+    return latestCrimes
 }
 
 
-const getAverageEmploymentRate = async (id) => {
+const getLatestEmploymentRate = async (id) => {
     commonConstants.employmentRateQuery.query[0].selection.values = [id]
 
     let employmentData = await fetchApiData(commonConstants.employmentRateUrl, commonConstants.employmentRateQuery)
     employmentData = Object.values(employmentData.value)
 
-    let employed = 0
-    let all = 0
-
-    for(let i = 0; i < employmentData.length; i++) {
-        if (i < (employmentData.length / 2)) {
-            employed += employmentData[i]
-        }
-        else {
-            all += employmentData[i]
-        }
-    }
-    all += employed
+    let employed = employmentData[(employmentData.length / 2) - 1]
+    let all = employmentData[employmentData.length - 1] + employed
 
     return (employed / all * 100).toFixed(2)
 }
@@ -162,15 +141,15 @@ const filterFunction = () => {
     let a = div.getElementsByTagName("a")
 
     for (let i = 0; i < a.length; i++) {
-      let textValue = a[i].innerText
-
-      if (textValue.toLowerCase().startsWith(filter)) {
-        a[i].style.display = ""
-      } else {
-        a[i].style.display = "none"
-      }
+        let textValue = a[i].innerText
+        
+        if (filter.length > 0 && textValue.toLowerCase().startsWith(filter)) {
+            a[i].style.display = "block"
+        } else {
+            a[i].style.display = "none"
+        }
     }
-  }
+}
 
 
 const loadDropDownMenu = async () => {
@@ -196,6 +175,13 @@ const loadDropDownMenu = async () => {
 
 
 const selectMunicipality = (id, text) => {
+    let div = document.getElementById('dropdownSelection')
+    let a = div.getElementsByTagName('a')
+
+    for (let i = 0; i < a.length; i++) {
+        a[i].style.display = 'none'
+    }
+
     document.getElementById('itemBtn').innerText = text
     municipality.id = [id]
     municipality.name = text
@@ -228,13 +214,12 @@ const selectNavItem = () => {
             else if (item.id === 'infoBtn') {
                 document.getElementById('info').scrollIntoView({
                     behavior: 'smooth',
-                    block: 'end'
+                    block: 'center'
                 })
             }
         })
     })
 }
-
 
 
 const loadData = async () => {

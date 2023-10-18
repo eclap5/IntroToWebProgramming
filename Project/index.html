@@ -26,7 +26,7 @@
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" id="itemBtn">Municipality</a>
                 <div id="dropdownSelection" class="dropdown-menu">
-                    <input type="text" placeholder="Search.." id="input">
+                    <input type="text" placeholder="Search..." id="input">
                 </div>
             </li>
             <li class="nav-item">
@@ -39,21 +39,36 @@
         <div id="map"></div>
         <div id="chart"></div>
         <div id="info">
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nisi, veniam. Autem, temporibus! Tempore doloribus quisquam ratione rerum eius illo iste excepturi, eligendi modi voluptatem. Numquam, debitis pariatur. Tempora, pariatur vitae.</p>
-            <br>
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nisi, veniam. Autem, temporibus! Tempore doloribus quisquam ratione rerum eius illo iste excepturi, eligendi modi voluptatem. Numquam, debitis pariatur. Tempora, pariatur vitae.</p>
-            <br>
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nisi, veniam. Autem, temporibus! Tempore doloribus quisquam ratione rerum eius illo iste excepturi, eligendi modi voluptatem. Numquam, debitis pariatur. Tempora, pariatur vitae.</p>
-            <br>
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nisi, veniam. Autem, temporibus! Tempore doloribus quisquam ratione rerum eius illo iste excepturi, eligendi modi voluptatem. Numquam, debitis pariatur. Tempora, pariatur vitae.</p>
-            <br>
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nisi, veniam. Autem, temporibus! Tempore doloribus quisquam ratione rerum eius illo iste excepturi, eligendi modi voluptatem. Numquam, debitis pariatur. Tempora, pariatur vitae.</p>
-            <br>
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nisi, veniam. Autem, temporibus! Tempore doloribus quisquam ratione rerum eius illo iste excepturi, eligendi modi voluptatem. Numquam, debitis pariatur. Tempora, pariatur vitae.</p>
-            <br>
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nisi, veniam. Autem, temporibus! Tempore doloribus quisquam ratione rerum eius illo iste excepturi, eligendi modi voluptatem. Numquam, debitis pariatur. Tempora, pariatur vitae.</p>
-            <br>
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nisi, veniam. Autem, temporibus! Tempore doloribus quisquam ratione rerum eius illo iste excepturi, eligendi modi voluptatem. Numquam, debitis pariatur. Tempora, pariatur vitae.</p>
+            <h2>Info</h2>
+            <div id="mapInfo">
+                <h4>Map:</h4>
+                <p>The map shows the latest statistics for the selected municipality. All the latest data is based on the Finnish Statistics Center from the year 2022.</p>
+                <ul>
+                    <li>Crime rate takes all reported crimes from year 2022 into account from the selected municipality.</li>
+                    <li>Employment rate is calculated with only employed and unemployed personnel in the selected municipality. It does not consider the whole population.</li>
+                </ul>
+                <br>
+            </div>
+            <div id="chartInfo">
+                <h4>Chart:</h4>
+                <p>The chart shows selected data in a chart. All data is presented from the years 2000 - 2022.</p>
+                <ul>
+                    <li>The chart has two presentation styles which are dot/line chart and bar chart. Selection can be made from the top menu.</li>
+                    <li>Presented data can be selected from the top menu buttons.</li>
+                    <li>The chart can be exported as a svg file using the "Export chart" button from the top menu.</li>
+                </ul>
+                <br>
+            </div>
+            <div id="municipalityInfo">
+                <h4>Municipality:</h4>
+                <p>Data in the chart can be specified to use any municipality in Finland.</p>
+                <ul>
+                    <li>The municipality of the data to be presented in the chart can be selected from "Municipality" button from the top menu.</li>
+                    <li> If nothing is selected, there will be used default value "Finland".</li>
+                    <li>Municipality is chosen by typing letters to the search field and the application will suggest municipalities based on the input.</li>
+                    <li>Selected municipality will be presented in the button itself.</li>
+                </ul>
+            </div>
             <br>
         </div>
         <footer>
