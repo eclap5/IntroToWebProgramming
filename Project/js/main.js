@@ -8,6 +8,9 @@ let municipality = {
     name: 'Finland'
 }
 
+let chartType = 'line'
+let chartDataType = 'population'
+
 
 const fetchApiData = async (url, query) => {
     const response = await fetch(url, { 
@@ -119,20 +122,66 @@ const buildChart = async () => {
     
         datasets: [
             {
-                type: 'line',
+                type: chartType,
                 name: municipality.name,
                 values: populationData
             }
         ]},
     
-        title: `${municipality.name} population chart`,
-        type: 'line',
-        height: 650,
-        colors: ['#eb5146']
+        title: `${municipality.name} statistics chart`,
+        type: chartType,
+        height: 600,
+        colors: ['#007bff']
     })
     document.getElementById('exportBtn').addEventListener('click', () => {chart.export()})
+    document.getElementById('populationBtn').addEventListener('click', () => {changeChartData(chart, 'population')})
+    document.getElementById('crimeBtn').addEventListener('click', () => {changeChartData(chart, 'crime rate')})
+    document.getElementById('employmentBtn').addEventListener('click', () => {changeChartData(chart, 'employment rate')})
 }
 
+
+const changeChartData = async (chart, dataType) => {
+    chartDataType = dataType
+    let data = {}
+    data.labels = commonConstants.populationQuery.query[0].selection.values
+    data.datasets = [{
+        type: chartType,
+        name: municipality.name
+    }]
+    if (dataType === 'population') {
+        commonConstants.populationQuery.query[1].selection.values = municipality.id
+        let populationData = await fetchApiData(commonConstants.populationUrl, commonConstants.populationQuery)
+        populationData = Object.values(populationData.value)
+        data.datasets[0].values = populationData
+    }
+    else if (dataType === 'crime rate') {
+        let index = commonConstants.criminalStatQuery.query[1].selection.values.indexOf(municipality.id[0])
+        let crimeData = []
+        for (let i = 0; i < criminalData.length; i++) {
+            if (i % 310 === index) {
+                crimeData.push(criminalData[i])
+            }
+        }
+        data.datasets[0].values = crimeData
+    }
+    else if (dataType === 'employment rate') {
+        commonConstants.employmentRateQuery.query[0].selection.values = municipality.id
+        let employmentData = await fetchApiData(commonConstants.employmentRateUrl, commonConstants.employmentRateQuery)
+        employmentData = Object.values(employmentData.value)
+
+        let employmentArray = employmentData.slice(0, employmentData.length / 2)
+        let unemploymentArray = employmentData.slice(employmentData.length / 2, employmentData.length)
+        let employmentRate = []
+
+        for (let i = 0; i < employmentArray.length; i++) {
+            employmentRate.push((employmentArray[i] / (employmentArray[i] + unemploymentArray[i]) * 100).toFixed(2))
+        }
+
+        data.labels = commonConstants.employmentRateQuery.query[3].selection.values
+        data.datasets[0].values = employmentRate
+    }
+    chart.update(data)
+}
 
 const filterFunction = () => {
     let input = document.getElementById("input")
@@ -142,8 +191,9 @@ const filterFunction = () => {
 
     for (let i = 0; i < a.length; i++) {
         let textValue = a[i].innerText
-        
         if (filter.length > 0 && textValue.toLowerCase().startsWith(filter)) {
+            console.log(filter)
+            console.log(textValue)
             a[i].style.display = "block"
         } else {
             a[i].style.display = "none"
@@ -153,7 +203,7 @@ const filterFunction = () => {
 
 
 const loadDropDownMenu = async () => {
-    let object = document.getElementById('dropdownSelection')
+    let object = document.getElementById('dropdownList')
     let municipalityData = await fetchData(commonConstants.populationUrl)
     let municipalityArray = Object.values(municipalityData.variables[1].valueTexts)
     
@@ -179,6 +229,7 @@ const selectMunicipality = (id, text) => {
     let a = div.getElementsByTagName('a')
 
     for (let i = 0; i < a.length; i++) {
+        console.log(a[i].innerText)
         a[i].style.display = 'none'
     }
 
@@ -195,7 +246,7 @@ const selectNavItem = () => {
         item.addEventListener('click', (event) => {
             event.preventDefault()
             
-            if (item.id !== 'exportBtn') {
+            if (item.id !== 'exportBtn' && item.id !== 'interactiveBtn') {
                 navItems.forEach(item => item.classList.remove('active'))
                 item.classList.add('active')
             }
@@ -222,6 +273,19 @@ const selectNavItem = () => {
 }
 
 
+const changeChartType = () => {
+    document.getElementById('interactiveBtn').addEventListener('click', () => {
+        if (chartType === 'line') {
+            chartType = 'bar'
+        }
+        else {
+            chartType = 'line'
+        }
+        buildChart()
+    })
+}
+
+
 const loadData = async () => {
     criminalData = await fetchApiData(commonConstants.criminalStatUrl, commonConstants.criminalStatQuery)
     criminalData = Object.values(criminalData.value)
@@ -229,6 +293,7 @@ const loadData = async () => {
     document.getElementById('input').addEventListener('keyup', filterFunction)
     selectNavItem()
     initMap()
+    changeChartType()
     buildChart()
 }
 
